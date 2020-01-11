@@ -1,10 +1,16 @@
 import 'package:brew_crew_cafe/backend/loginchecker.dart';
+import 'package:brew_crew_cafe/screens/homepagescreen.dart';
+import 'package:brew_crew_cafe/screens/registerscreen.dart';
+import 'package:brew_crew_cafe/screens/signinscreen.dart';
 import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Brew Crew Cafe',
       theme: ThemeData(
         primaryColor: Colors.brown[800],
@@ -17,10 +23,23 @@ class MyApp extends StatelessWidget {
             title: TextStyle(color: Colors.white),
           ),
         ),
-        buttonColor: Colors.brown[600],
+        buttonTheme: ButtonThemeData(buttonColor: Colors.brown[800]),
         cardTheme: CardTheme(color: Colors.white),        
       ),
       home: LoginChecker(),
+      routes: {
+        SignInScreen.routename : (ctx) => SignInScreen(),
+        RegisterScreen.routename: (ctx) => RegisterScreen(),
+        HomePageScreen.routename: (ctx) => HomePageScreen(),
+      }
     );
   }
 }
+
+
+
+
+
+
+
+
