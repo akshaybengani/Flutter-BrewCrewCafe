@@ -1,3 +1,4 @@
+import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/signinscreen.dart';
 import 'package:flutter/material.dart';
@@ -204,7 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       onPressed: () {
                         Navigator.of(context)
-                            .pushReplacementNamed(SignInScreen.routename);
+                            .pushNamed(SignInScreen.routename);
                       },
                     ),
                   ),
@@ -218,7 +219,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       onPressed: () {
                         Navigator.of(context)
-                            .pushReplacementNamed(HomePageScreen.routename);
+                            .pushReplacementNamed(CoffeePrefScreen.routename);
                       },
                     ),
                   ),

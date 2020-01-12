@@ -1,3 +1,4 @@
+import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/registerscreen.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,7 @@ class SignInScreen extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                               onPressed: () {
-                                Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
+                                Navigator.of(context).pushReplacementNamed(CoffeePrefScreen.routename);
                               },
                             ),
                           ),
@@ -95,7 +96,7 @@ class SignInScreen extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                               onPressed: () {
-                                Navigator.of(context).pushReplacementNamed(RegisterScreen.routename);
+                                Navigator.of(context).pushNamed(RegisterScreen.routename);
                               },
                             ),
                           ),

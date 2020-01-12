@@ -1,4 +1,5 @@
 import 'package:brew_crew_cafe/backend/loginchecker.dart';
+import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/registerscreen.dart';
 import 'package:brew_crew_cafe/screens/signinscreen.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         SignInScreen.routename : (ctx) => SignInScreen(),
         RegisterScreen.routename: (ctx) => RegisterScreen(),
         HomePageScreen.routename: (ctx) => HomePageScreen(),
+        CoffeePrefScreen.routename: (ctx) => CoffeePrefScreen(),
       }
     );
   }
