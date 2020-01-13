@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class CrewUser {
   final String crewID;
   final String authID;
@@ -9,13 +11,13 @@ class CrewUser {
   final bool isAdmin;
 
   CrewUser({
-    this.crewID,
-    this.authID,
-    this.name,
-    this.bio,
-    this.crewName,
-    this.coffeeIntensity,
-    this.sugarIntensity,
-    this.isAdmin,
+    @required this.crewID,
+    @required this.authID,
+    @required this.name,
+    @required this.bio,
+    @required this.crewName,
+    @required this.coffeeIntensity,
+    @required this.sugarIntensity,
+    @required this.isAdmin,
   });
 }
