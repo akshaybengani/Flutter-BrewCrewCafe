@@ -2,27 +2,35 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthCrew {
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future loginWithEmail(
+  Future<String> loginWithEmail(
       {@required String email, @required String password}) async {
-    try {
-      var user = await firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      return user;
-    } catch (error) {
-      return error.toString();
-    }
+    AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: password);
+    FirebaseUser user = result.user;
+    return user.uid;
   }
 
-  Future signUpWithEmail(
-      {@required String email, @required String password}) async {
-    try {
-      var authResult = await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      return authResult.user;
-    } catch (error) {
-      return error.toString();
-    }
+  Future<String> signUpWithEmail({
+    @required String email,
+    @required String password,
+  }) async {
+    AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    FirebaseUser user = result.user;
+    return user.uid;
   }
+
+  Future<FirebaseUser> getCurrentUser() async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    return user;
+  }
+
+  Future<void> signOut() async {
+    return _firebaseAuth.signOut();
+  }
+
 }

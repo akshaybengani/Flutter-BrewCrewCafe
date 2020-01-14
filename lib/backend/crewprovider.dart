@@ -64,7 +64,7 @@ class CrewProvider with ChangeNotifier {
       isAdmin: false,
     ),
   ];
-
+  
   List<CrewUser> get crewlist {
     return [..._crewlist];
   }
@@ -72,6 +72,12 @@ class CrewProvider with ChangeNotifier {
   // This will return the CrewMember detail of provided authID, crew
   CrewUser findByAuthID(String authID){
     return _crewlist.firstWhere((crew) => crew.authID == authID);
+  }
+
+  List<CrewUser> crewExceptCaptain(String authID){
+    final List<CrewUser> mList = _crewlist;
+    mList.removeWhere((test) => test.authID == authID );
+    return mList;
   }
 
 

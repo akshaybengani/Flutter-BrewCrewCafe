@@ -1,18 +1,25 @@
+import 'package:brew_crew_cafe/screens/managecrewscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 
 class BrewDrawer extends StatefulWidget {
+  
+  static const routename = '/brewdrawer';
+  
   @override
   _BrewDrawerState createState() => _BrewDrawerState();
 }
 
 class _BrewDrawerState extends State<BrewDrawer> {
-
-  bool checkAdmin(){
-    return false;
+  bool checkAdmin() {
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
+    final String shareMessage =
+        'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -50,7 +57,10 @@ class _BrewDrawerState extends State<BrewDrawer> {
                     'I am a coffee lover and I want to taste every kind of coffee available in market'),
                 SizedBox(height: 5),
                 ListTile(
-                  onTap: (){},
+                  onTap: () {
+                    // TODO Add Crew ID with it
+                    Share.share(shareMessage);
+                  },
                   leading: Icon(
                     Icons.add_box,
                     color: Colors.brown[800],
@@ -58,35 +68,37 @@ class _BrewDrawerState extends State<BrewDrawer> {
                   title: Text('Share Your Crew'),
                 ),
                 ListTile(
-                  onTap: (){},
+                  onTap: () {
+                    // TODO Update the share message for the App Sharing
+                    Share.share(shareMessage);
+                  },
                   leading: Icon(
                     Icons.share,
                     color: Colors.brown[800],
                   ),
                   title: Text('Share Brew Crew Cafe'),
                 ),
-                
-                checkAdmin() ?
+                checkAdmin()
+                    ? ListTile(
+                        onTap: () {
+                          Navigator.of(context).popAndPushNamed(ManageCrewScreen.routename);
+                        },
+                        leading: Icon(
+                          Icons.edit,
+                          color: Colors.brown[800],
+                        ),
+                        title: Text('Manage Crew'),
+                      )
+                    : ListTile(
+                        onTap: () {},
+                        leading: Icon(
+                          Icons.email,
+                          color: Colors.brown[800],
+                        ),
+                        title: Text('Contact Crew Captain'),
+                      ),
                 ListTile(
-                  onTap: (){},
-                  leading: Icon(
-                    Icons.edit,
-                    color: Colors.brown[800],
-                  ),
-                  title: Text('Manage Crew'),
-                )
-                :
-                ListTile(
-                  onTap: (){},
-                  leading: Icon(
-                    Icons.email,
-                    color: Colors.brown[800],
-                  ),
-                  title: Text('Contact Crew Captain'),
-                ),
-
-                ListTile(
-                  onTap: (){},
+                  onTap: () {},
                   leading: Icon(
                     Icons.person,
                     color: Colors.brown[800],
