@@ -8,9 +8,8 @@ import 'package:share/share.dart';
 
 class HomePageScreen extends StatelessWidget {
   static const routename = '/homepagescreen';
-  final String shareMessage = 'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
- 
-  
+  final String shareMessage =
+      'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +19,10 @@ class HomePageScreen extends StatelessWidget {
     return Scaffold(
       drawer: BrewDrawer(),
       appBar: AppBar(
-        title: Text(
-          'Brew Crew Cafe',
-          style: TextStyle(fontSize: 20),
-        ),
+        title: Text('Brew Crew Cafe'),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.edit),
+            icon: Icon(Icons.edit, color: Colors.white),
             textColor: Colors.white,
             onPressed: () {
               Navigator.of(context).pushNamed(CoffeePrefScreen.routename);
@@ -58,16 +54,13 @@ class HomePageScreen extends StatelessWidget {
                   ),
                 ),
                 FlatButton.icon(
-                  icon: Icon(
-                    Icons.share,
-                    color: Colors.brown[800],
-                  ),
+                  icon: Icon(Icons.share),
                   onPressed: () {
                     Share.share('$shareMessage $authID');
                   },
                   label: Text(
                     'Invite',
-                    style: TextStyle(color: Colors.brown[800]),
+                    style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                 ),
               ],

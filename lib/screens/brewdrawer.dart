@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 
 class BrewDrawer extends StatefulWidget {
-  
   static const routename = '/brewdrawer';
-  
+
   @override
   _BrewDrawerState createState() => _BrewDrawerState();
 }
@@ -61,10 +60,7 @@ class _BrewDrawerState extends State<BrewDrawer> {
                     // TODO Add Crew ID with it
                     Share.share(shareMessage);
                   },
-                  leading: Icon(
-                    Icons.add_box,
-                    color: Colors.brown[800],
-                  ),
+                  leading: Icon(Icons.add_box),
                   title: Text('Share Your Crew'),
                 ),
                 ListTile(
@@ -72,37 +68,26 @@ class _BrewDrawerState extends State<BrewDrawer> {
                     // TODO Update the share message for the App Sharing
                     Share.share(shareMessage);
                   },
-                  leading: Icon(
-                    Icons.share,
-                    color: Colors.brown[800],
-                  ),
+                  leading: Icon(Icons.share),
                   title: Text('Share Brew Crew Cafe'),
                 ),
                 checkAdmin()
                     ? ListTile(
                         onTap: () {
-                          Navigator.of(context).popAndPushNamed(ManageCrewScreen.routename);
+                          Navigator.of(context)
+                              .popAndPushNamed(ManageCrewScreen.routename);
                         },
-                        leading: Icon(
-                          Icons.edit,
-                          color: Colors.brown[800],
-                        ),
+                        leading: Icon(Icons.edit),
                         title: Text('Manage Crew'),
                       )
                     : ListTile(
                         onTap: () {},
-                        leading: Icon(
-                          Icons.email,
-                          color: Colors.brown[800],
-                        ),
+                        leading: Icon(Icons.email),
                         title: Text('Contact Crew Captain'),
                       ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(
-                    Icons.person,
-                    color: Colors.brown[800],
-                  ),
+                  leading: Icon(Icons.person),
                   title: Text('Log out'),
                 ),
               ],

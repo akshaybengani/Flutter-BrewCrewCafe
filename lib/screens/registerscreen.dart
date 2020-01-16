@@ -1,5 +1,4 @@
 import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
-import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/signinscreen.dart';
 import 'package:flutter/material.dart';
 
@@ -26,24 +25,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: <Widget>[
               RichText(
                 text: TextSpan(
-                  style: TextStyle(fontSize: 30, color: Colors.black),
+                  style: theme.primaryTextTheme.subhead,
                   children: <TextSpan>[
-                    TextSpan(text: 'Welcome to\n'),
+                    const TextSpan(text: 'Welcome to\n'),
                     TextSpan(
                       text: 'Brew Crew\n',
-                      style: TextStyle(
-                          color: theme.primaryColor,
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold),
+                      style: theme.primaryTextTheme.headline,
                     ),
-                    TextSpan(text: 'Cafe'),
+                    const TextSpan(text: 'Cafe'),
                   ],
                 ),
               ),
-              Divider(
-                thickness: 5,
-                color: theme.accentColor,
-              ),
+              Divider(),
               Container(
                 margin: EdgeInsets.only(top: 20),
                 padding: EdgeInsets.all(20),
@@ -54,31 +47,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Form(
                   child: Column(
                     children: <Widget>[
-                      Text(
-                        'Register New User',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 20),
+                      Text('Register New User',
+                          style: theme.primaryTextTheme.body1),
+                      const SizedBox(height: 20),
                       TextFormField(
-                        cursorColor: theme.primaryColor,
                         decoration: InputDecoration(
                             icon: Icon(Icons.person), labelText: 'Name'),
                       ),
                       TextFormField(
-                        cursorColor: theme.primaryColor,
                         decoration: InputDecoration(
                             icon: Icon(Icons.email), labelText: 'Email'),
                       ),
                       TextFormField(
                         obscureText: true,
-                        cursorColor: theme.primaryColor,
                         decoration: InputDecoration(
                             icon: Icon(Icons.lock), labelText: 'Password'),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                     ],
@@ -96,46 +81,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Form(
                         child: Column(
                           children: <Widget>[
-                            Text(
-                              'Crew Details',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            Text('Crew Details',
+                                style: theme.primaryTextTheme.body1),
 
                             // ...
 
-                            SizedBox(height: 20),
-                            Text(
+                            const SizedBox(height: 20),
+                            const Text(
                                 'Enter Your Crew ID received from your \nCrew or Captain'),
                             Row(
                               children: <Widget>[
                                 Expanded(
                                   child: TextFormField(
                                     onTap: () {},
-                                    cursorColor: theme.primaryColor,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         icon: Icon(Icons.group),
                                         labelText: 'Crew ID'),
                                   ),
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.content_paste),
+                                  icon: const Icon(Icons.content_paste),
                                   onPressed: () {},
                                 ),
                               ],
                             ),
 
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             RaisedButton(
-                              textColor: Colors.white,
                               onPressed: () {
                                 setState(() {
                                   newTeamToggle = !newTeamToggle;
                                 });
                               },
-                              child: Text('Create a New Brew Crew Team'),
+                              child: const Text('Create a New Brew Crew Team'),
                             )
 
                             // ...
@@ -153,36 +131,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Form(
                         child: Column(
                           children: <Widget>[
-                            Text(
-                              'New Crew Details',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            Text('New Crew Details',
+                                style: theme.primaryTextTheme.body1),
 
                             // ...
 
-                            SizedBox(height: 20),
-                            Text(
+                            const SizedBox(height: 20),
+                            const Text(
                                 'To create your own brew crew team,\nEnter your Crew team name'),
                             TextFormField(
                               onTap: () {},
-                              cursorColor: theme.primaryColor,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   icon: Icon(Icons.group),
                                   labelText: 'Unique Crew Name'),
                             ),
 
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             RaisedButton(
-                              textColor: Colors.white,
                               onPressed: () {
                                 setState(() {
                                   newTeamToggle = !newTeamToggle;
                                 });
                               },
-                              child: Text('Join your existing Crew'),
+                              child: const Text('Join your existing Crew'),
                             )
 
                             // ...
@@ -190,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -198,25 +169,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Container(
                     alignment: Alignment.center,
                     child: RaisedButton(
-                      child: Text(
-                        'LOGIN',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
+                      child: const Text('LOGIN'),
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(SignInScreen.routename);
+                        Navigator.of(context).pushNamed(SignInScreen.routename);
                       },
                     ),
                   ),
                   Container(
                     alignment: Alignment.center,
                     child: RaisedButton(
-                      child: Text(
-                        'REGISTER',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
+                      child: const Text('REGISTER'),
                       onPressed: () {
                         Navigator.of(context)
                             .pushReplacementNamed(CoffeePrefScreen.routename);
@@ -225,7 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),

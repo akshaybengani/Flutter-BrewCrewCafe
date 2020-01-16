@@ -24,15 +24,38 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.brown[800],
           accentColor: Colors.brown[300],
           backgroundColor: Colors.brown[100],
+          dividerTheme:
+              DividerThemeData(color: Colors.brown[300], thickness: 5),
+          cursorColor: Colors.brown[800],
+          iconTheme: IconThemeData(color: Colors.brown[800]),
+          cardTheme: CardTheme(
+            color: Colors.white,
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(width: 3),
+            ),
+          ),
+          primaryTextTheme: TextTheme(
+            headline: TextStyle(
+                fontSize: 50,
+                color: Colors.brown[800],
+                fontWeight: FontWeight.bold),
+            subhead: TextStyle(fontSize: 30, color: Colors.black),
+            body1: TextStyle(
+                color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+            button: TextStyle(
+                color: Colors.white,
+                backgroundColor: Colors.brown[800],
+                fontWeight: FontWeight.bold),
+          ),
           appBarTheme: AppBarTheme(
             color: Colors.brown[800],
             textTheme: TextTheme(
               // Add Fonts and set Font style
-              title: TextStyle(color: Colors.white),
+              title: TextStyle(color: Colors.white, fontSize: 20),
             ),
           ),
-          buttonTheme: ButtonThemeData(buttonColor: Colors.brown[800]),
-          cardTheme: CardTheme(color: Colors.white),
         ),
         //home: LoginChecker(AuthCrew()),
         home: SignInScreen(),
@@ -44,7 +67,6 @@ class MyApp extends StatelessWidget {
           ManageCrewScreen.routename: (ctx) => ManageCrewScreen(),
           BrewDrawer.routename: (ctx) => BrewDrawer(),
         },
-
       ),
     );
   }

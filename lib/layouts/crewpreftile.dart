@@ -10,10 +10,8 @@ class CrewPrefTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: Colors.brown[coffeeIntensity * 100], width: 3),
+        side: BorderSide(color: Colors.brown[coffeeIntensity * 100]),
       ),
       child: ListTile(
         contentPadding: EdgeInsets.all(10),
@@ -41,9 +39,8 @@ class CrewPrefTile extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
                   side: BorderSide(
-                      color: Colors.brown[coffeeIntensity * 100], width: 5),
+                      color: Colors.brown[coffeeIntensity * 100]),
                 ),
                 content: SizedBox(
                   height: 200,

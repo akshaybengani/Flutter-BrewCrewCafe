@@ -1,5 +1,4 @@
 import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
-import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/registerscreen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,24 +17,18 @@ class SignInScreen extends StatelessWidget {
             children: <Widget>[
               RichText(
                 text: TextSpan(
-                  style: TextStyle(fontSize: 30, color: Colors.black),
+                  style: theme.primaryTextTheme.subhead,
                   children: <TextSpan>[
-                    TextSpan(text: 'Welcome to\n'),
+                    const TextSpan(text: 'Welcome to\n'),
                     TextSpan(
                       text: 'Brew Crew\n',
-                      style: TextStyle(
-                          color: theme.primaryColor,
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold),
+                      style: theme.primaryTextTheme.headline,
                     ),
-                    TextSpan(text: 'Cafe'),
+                    const TextSpan(text: 'Cafe'),
                   ],
                 ),
               ),
-              Divider(
-                thickness: 5,
-                color: theme.accentColor,
-              ),
+              Divider(),
               Container(
                 margin: EdgeInsets.only(top: 20),
                 padding: EdgeInsets.all(20),
@@ -46,22 +39,14 @@ class SignInScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Text('Login', style: theme.primaryTextTheme.body1),
                       SizedBox(height: 20),
                       TextFormField(
-                        cursorColor: theme.primaryColor,
                         decoration: InputDecoration(
                             icon: Icon(Icons.email), labelText: 'Email'),
                       ),
                       TextFormField(
                         obscureText: true,
-                        cursorColor: theme.primaryColor,
                         decoration: InputDecoration(
                             icon: Icon(Icons.lock), labelText: 'Password'),
                       ),
@@ -75,28 +60,20 @@ class SignInScreen extends StatelessWidget {
                           Container(
                             alignment: Alignment.center,
                             child: RaisedButton(
-                              child: Text(
-                                'LOGIN',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                              child: Text('LOGIN'),
                               onPressed: () {
-                                Navigator.of(context).pushReplacementNamed(CoffeePrefScreen.routename);
+                                Navigator.of(context).pushReplacementNamed(
+                                    CoffeePrefScreen.routename);
                               },
                             ),
                           ),
                           Container(
                             alignment: Alignment.center,
                             child: RaisedButton(
-                              child: Text(
-                                'REGISTER',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                              child: Text('REGISTER'),
                               onPressed: () {
-                                Navigator.of(context).pushNamed(RegisterScreen.routename);
+                                Navigator.of(context)
+                                    .pushNamed(RegisterScreen.routename);
                               },
                             ),
                           ),
