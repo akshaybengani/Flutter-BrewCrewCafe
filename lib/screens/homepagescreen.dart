@@ -15,7 +15,8 @@ class HomePageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final crewProd = Provider.of<CrewProvider>(context, listen: true);
     final crewData = crewProd.crewlist;
-    final authID = crewProd.findByAuthID('001').crewID;
+    // final authID = crewProd.findByAuthID('001').crewID;
+    final authID = 001;
     return Scaffold(
       drawer: BrewDrawer(),
       appBar: AppBar(
@@ -54,7 +55,10 @@ class HomePageScreen extends StatelessWidget {
                   ),
                 ),
                 FlatButton.icon(
-                  icon: Icon(Icons.share),
+                  icon: Icon(
+                    Icons.share,
+                    color: Colors.brown[800],
+                  ),
                   onPressed: () {
                     Share.share('$shareMessage $authID');
                   },

@@ -14,7 +14,7 @@ class UserManageTile extends StatelessWidget {
         // contentPadding: EdgeInsets.all(10),
         title: Text(name, style: TextStyle(fontSize: 20),),
         trailing: IconButton(
-          icon: Icon(Icons.delete),
+          icon: Icon(Icons.delete, color: Colors.brown[800], ),
           onPressed: () {},
         ),
       ),

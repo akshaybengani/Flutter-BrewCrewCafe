@@ -52,16 +52,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
                       TextFormField(
                         decoration: InputDecoration(
-                            icon: Icon(Icons.person), labelText: 'Name'),
+                            icon: Icon(Icons.person, color: Colors.brown[800]), labelText: 'Name'),
                       ),
                       TextFormField(
                         decoration: InputDecoration(
-                            icon: Icon(Icons.email), labelText: 'Email'),
+                            icon: Icon(Icons.email, color: Colors.brown[800]), labelText: 'Email'),
                       ),
                       TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
-                            icon: Icon(Icons.lock), labelText: 'Password'),
+                            icon: Icon(Icons.lock, color: Colors.brown[800]), labelText: 'Password'),
                       ),
                       const SizedBox(
                         height: 20,

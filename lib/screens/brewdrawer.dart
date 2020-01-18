@@ -2,17 +2,8 @@ import 'package:brew_crew_cafe/screens/managecrewscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 
-class BrewDrawer extends StatefulWidget {
+class BrewDrawer extends StatelessWidget {
   static const routename = '/brewdrawer';
-
-  @override
-  _BrewDrawerState createState() => _BrewDrawerState();
-}
-
-class _BrewDrawerState extends State<BrewDrawer> {
-  bool checkAdmin() {
-    return true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,37 +48,24 @@ class _BrewDrawerState extends State<BrewDrawer> {
                 SizedBox(height: 5),
                 ListTile(
                   onTap: () {
-                    // TODO Add Crew ID with it
+                    //  Add Crew ID with it
                     Share.share(shareMessage);
                   },
-                  leading: Icon(Icons.add_box),
+                  leading: Icon(Icons.add_box, color: Colors.brown[800]),
                   title: Text('Share Your Crew'),
                 ),
                 ListTile(
                   onTap: () {
-                    // TODO Update the share message for the App Sharing
+                    //  Update the share message for the App Sharing
                     Share.share(shareMessage);
                   },
-                  leading: Icon(Icons.share),
+                  leading: Icon(Icons.share, color: Colors.brown[800]),
                   title: Text('Share Brew Crew Cafe'),
                 ),
-                checkAdmin()
-                    ? ListTile(
-                        onTap: () {
-                          Navigator.of(context)
-                              .popAndPushNamed(ManageCrewScreen.routename);
-                        },
-                        leading: Icon(Icons.edit),
-                        title: Text('Manage Crew'),
-                      )
-                    : ListTile(
-                        onTap: () {},
-                        leading: Icon(Icons.email),
-                        title: Text('Contact Crew Captain'),
-                      ),
+                AdminListTile(),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Icons.person),
+                  leading: Icon(Icons.person, color: Colors.brown[800]),
                   title: Text('Log out'),
                 ),
               ],
@@ -96,5 +74,33 @@ class _BrewDrawerState extends State<BrewDrawer> {
         ],
       ),
     );
+  }
+}
+
+class AdminListTile extends StatefulWidget {
+  @override
+  _AdminListTileState createState() => _AdminListTileState();
+}
+
+class _AdminListTileState extends State<AdminListTile> {
+  bool checkAdmin() {
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return checkAdmin()
+        ? ListTile(
+            onTap: () {
+              Navigator.of(context).popAndPushNamed(ManageCrewScreen.routename);
+            },
+            leading: Icon(Icons.edit, color: Colors.brown[800]),
+            title: Text('Manage Crew'),
+          )
+        : ListTile(
+            onTap: () {},
+            leading: Icon(Icons.email, color: Colors.brown[800]),
+            title: Text('Contact Crew Captain'),
+          );
   }
 }

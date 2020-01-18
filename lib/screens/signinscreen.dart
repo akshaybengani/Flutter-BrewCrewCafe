@@ -43,12 +43,12 @@ class SignInScreen extends StatelessWidget {
                       SizedBox(height: 20),
                       TextFormField(
                         decoration: InputDecoration(
-                            icon: Icon(Icons.email), labelText: 'Email'),
+                            icon: Icon(Icons.email, color: Colors.brown[800]), labelText: 'Email'),
                       ),
                       TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
-                            icon: Icon(Icons.lock), labelText: 'Password'),
+                            icon: Icon(Icons.lock, color: Colors.brown[800]), labelText: 'Password'),
                       ),
                       SizedBox(
                         height: 20,
@@ -60,6 +60,7 @@ class SignInScreen extends StatelessWidget {
                           Container(
                             alignment: Alignment.center,
                             child: RaisedButton(
+                              
                               child: Text('LOGIN'),
                               onPressed: () {
                                 Navigator.of(context).pushReplacementNamed(

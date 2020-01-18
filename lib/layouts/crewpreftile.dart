@@ -20,7 +20,7 @@ class CrewPrefTile extends StatelessWidget {
           backgroundColor: Colors.brown[coffeeIntensity * 100],
           child: Text(
             '${coffeeIntensity * 10}%',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
         title: Text(name),
@@ -64,6 +64,7 @@ class CrewPrefTile extends StatelessWidget {
                                   '${coffeeIntensity * 10}%',
                                   style: TextStyle(
                                       color: Colors.white,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -87,6 +88,7 @@ class CrewPrefTile extends StatelessWidget {
                                   '${sugarIntensity * 10}%',
                                   style: TextStyle(
                                       color: Colors.black,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),

@@ -27,7 +27,10 @@ class MyApp extends StatelessWidget {
           dividerTheme:
               DividerThemeData(color: Colors.brown[300], thickness: 5),
           cursorColor: Colors.brown[800],
-          iconTheme: IconThemeData(color: Colors.brown[800]),
+
+          //iconTheme: IconThemeData(color: Colors.brown[800]),
+          //accentIconTheme: IconThemeData(color: Colors.brown[800]),
+          //primaryIconTheme: IconThemeData(color: Colors.brown[800]),
           cardTheme: CardTheme(
             color: Colors.white,
             elevation: 5,
@@ -49,6 +52,9 @@ class MyApp extends StatelessWidget {
                 backgroundColor: Colors.brown[800],
                 fontWeight: FontWeight.bold),
           ),
+          buttonTheme: ButtonThemeData(
+              buttonColor: Colors.brown[800],
+              textTheme: ButtonTextTheme.primary),
           appBarTheme: AppBarTheme(
             color: Colors.brown[800],
             textTheme: TextTheme(
@@ -57,8 +63,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        //home: LoginChecker(AuthCrew()),
-        home: SignInScreen(),
+        home: LoginChecker(AuthCrew()),
+        //home: SignInScreen(),
         routes: {
           SignInScreen.routename: (ctx) => SignInScreen(),
           RegisterScreen.routename: (ctx) => RegisterScreen(),
