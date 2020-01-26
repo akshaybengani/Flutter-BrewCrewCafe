@@ -66,7 +66,7 @@ class CrewProvider with ChangeNotifier {
   ];
   
   List<CrewUser> get crewlist {
-    return [..._crewlist];
+    return _crewlist;
   }
 
   // This will return the CrewMember detail of provided authID, crew

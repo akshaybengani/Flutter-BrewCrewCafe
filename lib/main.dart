@@ -1,12 +1,12 @@
-import 'package:brew_crew_cafe/backend/authcrew.dart';
+import 'package:brew_crew_cafe/backend/authprovider.dart';
 import 'package:brew_crew_cafe/backend/crewprovider.dart';
-import 'package:brew_crew_cafe/backend/loginchecker.dart';
 import 'package:brew_crew_cafe/screens/brewdrawer.dart';
 import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/managecrewscreen.dart';
 import 'package:brew_crew_cafe/screens/registerscreen.dart';
 import 'package:brew_crew_cafe/screens/signinscreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +15,15 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: CrewProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: AuthProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: CrewProvider(),
+        )
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Brew Crew Cafe',
@@ -63,7 +70,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: LoginChecker(AuthCrew()),
+        home: MyHomeApp(),
         //home: SignInScreen(),
         routes: {
           SignInScreen.routename: (ctx) => SignInScreen(),
@@ -74,6 +81,30 @@ class MyApp extends StatelessWidget {
           BrewDrawer.routename: (ctx) => BrewDrawer(),
         },
       ),
+    );
+  }
+}
+
+class MyHomeApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          if (snapshot.hasData) {
+            return HomePageScreen();
+          } else {
+            return SignInScreen();
+          }
+        }
+      },
     );
   }
 }

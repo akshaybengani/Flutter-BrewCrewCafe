@@ -11,6 +11,9 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool newTeamToggle = false;
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  bool _isLoading = false;
+  String email, password, name;
 
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-class AuthCrew {
+class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<String> loginWithEmail(
-      {@required String email, @required String password}) async {
+  Future<String> loginWithEmail({
+    @required String email,
+    @required String password,
+  }) async {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
@@ -30,7 +32,8 @@ class AuthCrew {
   }
 
   Future<void> signOut() async {
-    return _firebaseAuth.signOut();
+    _firebaseAuth.signOut();
+    notifyListeners();
   }
-
+  
 }

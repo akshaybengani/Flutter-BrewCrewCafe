@@ -1,5 +1,8 @@
+import 'package:brew_crew_cafe/backend/authprovider.dart';
 import 'package:brew_crew_cafe/screens/managecrewscreen.dart';
+import 'package:brew_crew_cafe/screens/signinscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class BrewDrawer extends StatelessWidget {
@@ -9,7 +12,7 @@ class BrewDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final String shareMessage =
         'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
-
+    
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -64,7 +67,10 @@ class BrewDrawer extends StatelessWidget {
                 ),
                 AdminListTile(),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {                 
+                    Provider.of<AuthProvider>(context,listen: false).signOut();
+                    Navigator.of(context).pop();
+                  },
                   leading: Icon(Icons.person, color: Colors.brown[800]),
                   title: Text('Log out'),
                 ),
