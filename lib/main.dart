@@ -1,5 +1,7 @@
-import 'package:brew_crew_cafe/backend/authprovider.dart';
-import 'package:brew_crew_cafe/backend/crewprovider.dart';
+import 'package:brew_crew_cafe/providers/fetchfromlocal.dart';
+import 'package:brew_crew_cafe/providers/authprovider.dart';
+import 'package:brew_crew_cafe/providers/crewprovider.dart';
+import 'package:brew_crew_cafe/providers/flagprovider.dart';
 import 'package:brew_crew_cafe/screens/brewdrawer.dart';
 import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
@@ -22,7 +24,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: CrewProvider(),
-        )
+        ),
+        ChangeNotifierProvider.value(
+          value: FlagProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -99,7 +104,8 @@ class MyHomeApp extends StatelessWidget {
           );
         } else {
           if (snapshot.hasData) {
-            return HomePageScreen();
+            //Provider.of<FlagProvider>(context,listen: false).dataExistTrue;
+            return FetchFromLocal();
           } else {
             return SignInScreen();
           }

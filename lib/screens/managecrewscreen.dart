@@ -1,5 +1,5 @@
-import 'package:brew_crew_cafe/backend/crewprovider.dart';
 import 'package:brew_crew_cafe/layouts/usermanagetile.dart';
+import 'package:brew_crew_cafe/providers/crewprovider.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +50,7 @@ class ManageCrewScreen extends StatelessWidget {
                     itemCount: crewExceptCaptain.length,
                     itemBuilder: (context, index) => UserManageTile(
                       name: crewExceptCaptain[index].name,
-                      authID: crewExceptCaptain[index].authID,
+                      authID: crewExceptCaptain[index].authid,
                     ),
                   ),
                 ),
@@ -87,7 +87,7 @@ class ManageCrewScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              // TODO Add some delete function code here
+                              
                             },
                           ),
                         ],

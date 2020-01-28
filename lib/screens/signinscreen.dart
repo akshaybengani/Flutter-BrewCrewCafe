@@ -1,6 +1,6 @@
-import 'package:brew_crew_cafe/backend/authprovider.dart';
 import 'package:brew_crew_cafe/layouts/custominfodialog.dart';
-import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
+import 'package:brew_crew_cafe/providers/authprovider.dart';
+import 'package:brew_crew_cafe/providers/flagprovider.dart';
 import 'package:brew_crew_cafe/screens/registerscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,10 +30,12 @@ class _SignInScreenState extends State<SignInScreen> {
     });
     try {
       await Provider.of<AuthProvider>(context, listen: false)
-          .loginWithEmail(email: email, password: password);
+          .loginWithEmail(email: email, password: password).then((_){
+            Provider.of<FlagProvider>(context,listen: false).dataExistFalse;
+          });
     } catch (e) {
       var errorMessage =
-          "Unable to Authenticate you please check your internet connection";
+          "Unable to Authenticate you please try again";
       print(e.toString());
 
       if (e.toString().contains('ERROR_INVALID_EMAIL')) {

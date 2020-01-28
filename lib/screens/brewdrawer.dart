@@ -1,6 +1,5 @@
-import 'package:brew_crew_cafe/backend/authprovider.dart';
+import 'package:brew_crew_cafe/providers/authprovider.dart';
 import 'package:brew_crew_cafe/screens/managecrewscreen.dart';
-import 'package:brew_crew_cafe/screens/signinscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';

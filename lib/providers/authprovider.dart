@@ -8,9 +8,12 @@ class AuthProvider extends ChangeNotifier {
     @required String email,
     @required String password,
   }) async {
+    print('Email $email and Password $password recieved now checking credentials.');
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
+    print('Authentication process completed Here is the :$result');
     FirebaseUser user = result.user;
+    print('We got the firebase user :$user with uid as:${user.uid}');
     return user.uid;
   }
 
@@ -26,14 +29,15 @@ class AuthProvider extends ChangeNotifier {
     return user.uid;
   }
 
-  Future<FirebaseUser> getCurrentUser() async {
+  Future<String> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
-    return user;
+    return user.uid;
   }
 
   Future<void> signOut() async {
     _firebaseAuth.signOut();
     notifyListeners();
   }
+
   
 }

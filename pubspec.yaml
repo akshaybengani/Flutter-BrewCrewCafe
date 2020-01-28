@@ -27,6 +27,9 @@ dependencies:
   provider: ^4.0.1
   share: ^0.6.3+5
   flutter_launcher_icons: ^0.7.2
+  intl: ^0.16.0
+  sqflite: ^1.2.0
+  path_provider: ^1.5.1
 
 dev_dependencies:
   flutter_test:

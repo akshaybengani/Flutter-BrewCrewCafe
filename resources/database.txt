@@ -1,0 +1,20 @@
+TABLE NAME crewdetail
+-> authid
+-> bio
+-> coffeeintensity
+-> sugarintensity
+-> crewadmin
+-> crewname
+-> name
+-> crewid
+
+  static const String COLAUTHID = "authid";	TEXT PRIMARY
+  static const String COLCNAME = "crewname";	TEXT
+  static const String COLNAME = "name";		TEXT
+  static const String COLBIO = "bio";		TEXT
+  static const String COLCOIN = "coffeeintensity";	INT
+  static const String COLSUIN = "sugarintensity";	INT
+  static const String COLCADMIN = "crewadmin";	bool
+  static const String COLCID = "crewid";		TEXT
+
+
