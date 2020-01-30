@@ -1,5 +1,9 @@
 import 'package:brew_crew_cafe/layouts/crewpreftile.dart';
+import 'package:brew_crew_cafe/layouts/custominfodialog.dart';
+import 'package:brew_crew_cafe/models/crewuser.dart';
+import 'package:brew_crew_cafe/providers/authprovider.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
+import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/screens/brewdrawer.dart';
 import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
 import 'package:flutter/material.dart';
@@ -15,24 +19,60 @@ class HomePageScreen extends StatefulWidget {
 
 class _HomePageScreenState extends State<HomePageScreen> {
   bool _isLoading = true;
+  bool syncProgressIndicator = false;
+  final String shareMessage =
+      'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
+  CrewUser currentUser;
 
   @override
   void initState() {
     super.initState();
-
-
-  
+    fetchDataFromLocalToList();
   }
 
-  final String shareMessage =
-      'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
+  void fetchDataFromLocalToList() async {
+    List<CrewUser> crewlist =
+        await Provider.of<DatabaseProvider>(context, listen: false)
+            .getCrewList();
+    Provider.of<CrewProvider>(context, listen: false)
+        .setLocalListFromDatabase(crewlist);
+    String authid = await Provider.of<AuthProvider>(context, listen: false)
+        .getCurrentUser();
+    Provider.of<CrewProvider>(context, listen: false).findByAuthId(authid);
+    currentUser =
+        Provider.of<CrewProvider>(context, listen: false).providerCurrentUser;
+  }
+
+  void syncCrewListWithCloud() async {
+    setState(() {
+      syncProgressIndicator = true;
+    });
+
+    List<CrewUser> crewlist =
+        await Provider.of<CrewProvider>(context, listen: false)
+            .fetchCrewMembersFromCloud(currentUser.authid);
+    int status = await Provider.of<DatabaseProvider>(context, listen: false)
+        .insertCrewMembers(crewlist);
+    if (status == 0) {
+      CustomInfoDialog.showInfoDialog(
+          title: 'Problem Occured',
+          ctx: context,
+          message: 'Some Internal problem occured please reinstall the app');
+      setState(() {
+        syncProgressIndicator = false;
+      });
+      return;
+    } else {
+      setState(() {
+        syncProgressIndicator = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final crewData = Provider.of<CrewProvider>(context, listen: true).crewlist;
-    // final crewData = crewProd.crewlist;
-    // final authID = crewProd.findByAuthID('001').crewID;
-    final authID = 001;
+
     return _isLoading
         ? Scaffold(
             appBar: AppBar(
@@ -46,6 +86,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
             appBar: AppBar(
               title: Text('Brew Crew Cafe'),
               actions: <Widget>[
+                syncProgressIndicator
+                    ? FlatButton.icon(
+                        icon: Icon(Icons.sync, color: Colors.white),
+                        label: Text('Sync'),
+                        onPressed: syncCrewListWithCloud,
+                      )
+                    : CircularProgressIndicator(),
                 FlatButton.icon(
                   icon: Icon(Icons.edit, color: Colors.white),
                   textColor: Colors.white,
@@ -71,7 +118,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          crewData[0].crewname,
+                          currentUser.crewname,
                           style: TextStyle(
                               fontSize: 30,
                               color: Theme.of(context).primaryColor,
@@ -84,7 +131,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           color: Colors.brown[800],
                         ),
                         onPressed: () {
-                          Share.share('$shareMessage $authID');
+                          Share.share('$shareMessage ${currentUser.crewid}');
                         },
                         label: Text(
                           'Invite',

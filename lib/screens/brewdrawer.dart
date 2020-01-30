@@ -1,4 +1,7 @@
+import 'package:brew_crew_cafe/layouts/contactandsupport.dart';
+import 'package:brew_crew_cafe/models/crewuser.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
+import 'package:brew_crew_cafe/providers/crewprovider.dart';
 import 'package:brew_crew_cafe/screens/managecrewscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,9 +9,11 @@ import 'package:share/share.dart';
 
 class BrewDrawer extends StatelessWidget {
   static const routename = '/brewdrawer';
+  CrewUser currentUser;
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<CrewProvider>(context, listen:false).providerCurrentUser;
     final String shareMessage =
         'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
     
@@ -39,19 +44,20 @@ class BrewDrawer extends StatelessWidget {
                           text: 'Welcome\n',
                           style: TextStyle(color: Colors.black, fontSize: 20)),
                       TextSpan(
-                          text: 'Akshay Bengani',
+                          text: currentUser.name,
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
                 SizedBox(height: 20),
                 Text(
-                    'I am a coffee lover and I want to taste every kind of coffee available in market'),
+                    currentUser.bio
+                    ),
                 SizedBox(height: 5),
                 ListTile(
                   onTap: () {
                     //  Add Crew ID with it
-                    Share.share(shareMessage);
+                    Share.share(shareMessage + currentUser.crewid.toString());
                   },
                   leading: Icon(Icons.add_box, color: Colors.brown[800]),
                   title: Text('Share Your Crew'),
@@ -59,12 +65,12 @@ class BrewDrawer extends StatelessWidget {
                 ListTile(
                   onTap: () {
                     //  Update the share message for the App Sharing
-                    Share.share(shareMessage);
+                    Share.share('Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts');
                   },
                   leading: Icon(Icons.share, color: Colors.brown[800]),
                   title: Text('Share Brew Crew Cafe'),
                 ),
-                AdminListTile(),
+                AdminListTile(currentUser.crewadmin.toString()),
                 ListTile(
                   onTap: () {                 
                     Provider.of<AuthProvider>(context,listen: false).signOut();
@@ -83,13 +89,27 @@ class BrewDrawer extends StatelessWidget {
 }
 
 class AdminListTile extends StatefulWidget {
+  
+  final String adminCheck;
+
+  AdminListTile(this.adminCheck);
+
   @override
   _AdminListTileState createState() => _AdminListTileState();
 }
 
 class _AdminListTileState extends State<AdminListTile> {
   bool checkAdmin() {
-    return true;
+   
+    if(widget.adminCheck == 'true'){
+      return true;
+    } 
+    else if(widget.adminCheck == 'false'){
+      return false;
+    } else {
+      return false;
+    }
+
   }
 
   @override
@@ -103,7 +123,9 @@ class _AdminListTileState extends State<AdminListTile> {
             title: Text('Manage Crew'),
           )
         : ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).popAndPushNamed(ContactAndSupport.routename);
+            },
             leading: Icon(Icons.email, color: Colors.brown[800]),
             title: Text('Contact Crew Captain'),
           );

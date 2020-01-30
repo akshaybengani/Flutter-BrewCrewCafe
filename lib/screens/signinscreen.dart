@@ -1,6 +1,9 @@
 import 'package:brew_crew_cafe/layouts/custominfodialog.dart';
+import 'package:brew_crew_cafe/models/crewuser.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
+import 'package:brew_crew_cafe/providers/databaseprovider.dart';
+import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/registerscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:brew_crew_cafe/layouts/errormsgmaker.dart';
@@ -18,49 +21,76 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _isLoading = false;
   String email, password;
   String loadingMsg = "";
+  bool authstatus = true;
   String authid = "";
 
   // Submit form function when user press the login button
   Future<void> _submitForm() async {
+    print('Join Your Crew Button Pressed');
     if (!_formKey.currentState.validate()) {
+      print('Form Keys Are Not Valid');
       return;
     }
-    // To save the form State
+    print('Validator Validated the form keys');
     _formKey.currentState.save();
-    // To Initiate Loading spinner
+    print('Form state is now saved');
     setState(() {
+      loadingMsg = "Logging in Please Wait ...";
       _isLoading = true;
-      loadingMsg = "Logging in Please Wait...";
     });
-    try {
-     await Provider.of<AuthProvider>(context, listen: false)
-          .loginWithEmail(email: email, password: password).then((uid){
-            setState(() {
-              loadingMsg = "Great! Getting your crew members onboard\nPlease Wait...";
-              authid = uid;
-            });
 
-          }).then((_) async {
-              await Provider.of<CrewProvider>(context).fetchCrewMembersFromCloud(authid);
-          });
-
-
-    } catch (e) {
-      print(e.toString());
-      
-      var emsg = ErrorMsgMaker.msgMaker(error: e.toString());
-      
-      CustomInfoDialog.showInfoDialog(
-        title: "Authentication Failed",
-        message: emsg,
-        ctx: context,
-      );
-
+    await Provider.of<AuthProvider>(context, listen: false)
+        .loginWithEmail(email: email, password: password)
+        .then((uid) {
       setState(() {
-        _isLoading = false;
+        loadingMsg = "Great! Getting your crew members onboard\nPlease Wait...";
+        authid = uid;
       });
-    }
-  }
+    }).catchError((onError) {
+      print(onError);
+      authstatus = false;
+      String emsg = ErrorMsgMaker.msgMaker(error: onError.toString());
+      CustomInfoDialog.showInfoDialog(
+          ctx: context, title: "Authentication Failed", message: emsg);
+    });
+    if (authstatus) {
+      List<CrewUser> crewlist =
+          await Provider.of<CrewProvider>(context, listen: false)
+              .fetchCrewMembersFromCloud(authid);
+
+      String dbres = await Provider.of<DatabaseProvider>(context, listen: false)
+          .deleteTable();
+
+      if (dbres == "All Ok") {
+        int status = await Provider.of<DatabaseProvider>(context, listen: false)
+            .insertCrewMembers(crewlist);
+        if (status == 0) {
+          CustomInfoDialog.showInfoDialog(
+              title: 'Problem Occured',
+              ctx: context,
+              message:
+                  'Some Internal problem occured please reinstall the app');
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        } else {
+          print(
+              'Every Process of Signup Completed now I can move to HomeScreen');
+          Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
+        }
+      } // DB Check Status
+      else {
+        CustomInfoDialog.showInfoDialog(
+            title: 'Problem Occured',
+            ctx: context,
+            message: 'Some Internal problem occured please reinstall the app');
+        setState(() {
+          _isLoading = false;
+        });
+      } // else block in case database encountered problem
+    } // AuthStatus bool checker for successfull auth
+  } // Submit form function ending
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:brew_crew_cafe/layouts/contactandsupport.dart';
 import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/providers/fetchfromlocal.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
@@ -87,7 +88,7 @@ class MyApp extends StatelessWidget {
           HomePageScreen.routename: (ctx) => HomePageScreen(),
           CoffeePrefScreen.routename: (ctx) => CoffeePrefScreen(),
           ManageCrewScreen.routename: (ctx) => ManageCrewScreen(),
-          BrewDrawer.routename: (ctx) => BrewDrawer(),
+          ContactAndSupport.routename: (ctx) => ContactAndSupport(),
         },
       ),
     );

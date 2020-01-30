@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:js';
+import 'package:brew_crew_cafe/layouts/custominfodialog.dart';
+import 'package:brew_crew_cafe/layouts/errormsgmaker.dart';
 import 'package:brew_crew_cafe/models/crewuser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DatabaseProvider with ChangeNotifier{
+class DatabaseProvider with ChangeNotifier {
   Database _database;
   static const String TABLENAME = "crewdetail";
 
@@ -36,8 +39,8 @@ class DatabaseProvider with ChangeNotifier{
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'brewcrew.db';
     print('Got the database directory in system :$path');
-    var database = openDatabase(path, version: 1, onCreate: _createDB );
-    
+    var database = openDatabase(path, version: 1, onCreate: _createDB);
+
     return database;
   }
 
@@ -63,7 +66,8 @@ class DatabaseProvider with ChangeNotifier{
 
   Future<CrewUser> getCurrentCrewUser(String uid) async {
     Database db = await this.database;
-    List<Map<String,dynamic>> mapList = await db.rawQuery('SELECT * FROM $TABLENAME WHERE authid = $uid');
+    List<Map<String, dynamic>> mapList =
+        await db.rawQuery('SELECT * FROM $TABLENAME WHERE authid = $uid');
     List<CrewUser> list = List<CrewUser>();
     list.add(CrewUser.fromMapObject(mapList[0]));
     CrewUser crewUser = list[0];
@@ -71,8 +75,9 @@ class DatabaseProvider with ChangeNotifier{
   }
 
   Future<String> getCrewName(String uid) async {
-     Database db = await this.database;
-    List<Map<String,dynamic>> mapList = await db.rawQuery('SELECT * FROM $TABLENAME WHERE authid = $uid');
+    Database db = await this.database;
+    List<Map<String, dynamic>> mapList =
+        await db.rawQuery('SELECT * FROM $TABLENAME WHERE authid = $uid');
     List<CrewUser> list = List<CrewUser>();
     list.add(CrewUser.fromMapObject(mapList[0]));
     CrewUser crewUser = list[0];
@@ -81,8 +86,9 @@ class DatabaseProvider with ChangeNotifier{
   }
 
   Future<String> getCurrentUserIsAdmin(String uid) async {
-     Database db = await this.database;
-    List<Map<String,dynamic>> mapList = await db.rawQuery('SELECT * FROM $TABLENAME WHERE authid = $uid');
+    Database db = await this.database;
+    List<Map<String, dynamic>> mapList =
+        await db.rawQuery('SELECT * FROM $TABLENAME WHERE authid = $uid');
     List<CrewUser> list = List<CrewUser>();
     list.add(CrewUser.fromMapObject(mapList[0]));
     CrewUser crewUser = list[0];
@@ -101,11 +107,16 @@ class DatabaseProvider with ChangeNotifier{
     return val;
   }
 
-  Future<void> deleteTable() async {
-    print('Getting dataase instance to delete');
-    Database db = await this.database;
-    print('Got Database Instance to delete now processing to delete table');
-    db.execute('DROP TABLE $TABLENAME');
+  Future<String> deleteTable() async {
+    try {
+      print('Getting dataase instance to delete');
+      Database db = await this.database;
+      print('Got Database Instance to delete now processing to delete table');
+      await db.execute('DROP TABLE $TABLENAME');
+      return "All Ok";
+    } catch (error) {
+      print(error.toString());
+      return "Local Database Error";
+    }
   }
-
 }
