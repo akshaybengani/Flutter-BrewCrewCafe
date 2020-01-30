@@ -1,8 +1,9 @@
 import 'package:brew_crew_cafe/layouts/custominfodialog.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
-import 'package:brew_crew_cafe/providers/flagprovider.dart';
+import 'package:brew_crew_cafe/providers/crewprovider.dart';
 import 'package:brew_crew_cafe/screens/registerscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:brew_crew_cafe/layouts/errormsgmaker.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -16,6 +17,8 @@ class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _isLoading = false;
   String email, password;
+  String loadingMsg = "";
+  String authid = "";
 
   // Submit form function when user press the login button
   Future<void> _submitForm() async {
@@ -27,28 +30,30 @@ class _SignInScreenState extends State<SignInScreen> {
     // To Initiate Loading spinner
     setState(() {
       _isLoading = true;
+      loadingMsg = "Logging in Please Wait...";
     });
     try {
-      await Provider.of<AuthProvider>(context, listen: false)
-          .loginWithEmail(email: email, password: password).then((_){
-            Provider.of<FlagProvider>(context,listen: false).dataExistFalse;
-          });
-    } catch (e) {
-      var errorMessage =
-          "Unable to Authenticate you please try again";
-      print(e.toString());
+     await Provider.of<AuthProvider>(context, listen: false)
+          .loginWithEmail(email: email, password: password).then((uid){
+            setState(() {
+              loadingMsg = "Great! Getting your crew members onboard\nPlease Wait...";
+              authid = uid;
+            });
 
-      if (e.toString().contains('ERROR_INVALID_EMAIL')) {
-        errorMessage =
-            "Entered Email is Invalid Please try again with correct credentials";
-      } else if (e.toString().contains('ERROR_WRONG_PASSWORD')) {
-        errorMessage =
-            "Entered Password is Incorrect Please Try again with correct credentials";
-      }
-      CustomInfoDialog().showInfoDialog(
+          }).then((_) async {
+              await Provider.of<CrewProvider>(context).fetchCrewMembersFromCloud(authid);
+          });
+
+
+    } catch (e) {
+      print(e.toString());
+      
+      var emsg = ErrorMsgMaker.msgMaker(error: e.toString());
+      
+      CustomInfoDialog.showInfoDialog(
         title: "Authentication Failed",
-        message: errorMessage,
-        context: context,
+        message: emsg,
+        ctx: context,
       );
 
       setState(() {
@@ -93,7 +98,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           CircularProgressIndicator(),
                           SizedBox(height: 10),
                           Text(
-                            'Logging in Please wait!',
+                            loadingMsg,
                             textAlign: TextAlign.center,
                           ),
                         ],

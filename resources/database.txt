@@ -14,7 +14,7 @@ TABLE NAME crewdetail
   static const String COLBIO = "bio";		TEXT
   static const String COLCOIN = "coffeeintensity";	INT
   static const String COLSUIN = "sugarintensity";	INT
-  static const String COLCADMIN = "crewadmin";	bool
+  static const String COLCADMIN = "crewadmin";	TEXT
   static const String COLCID = "crewid";		TEXT
 
 

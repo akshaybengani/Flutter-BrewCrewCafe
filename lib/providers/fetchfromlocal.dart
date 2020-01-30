@@ -39,6 +39,7 @@ class _FetchFromLocalState extends State<FetchFromLocal> {
      String uid = await Provider.of<AuthProvider>(context, listen: false).getCurrentUser();
      print("My current user uid:"+uid);
      
+     
 
 
   }

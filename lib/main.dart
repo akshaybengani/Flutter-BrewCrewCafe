@@ -1,3 +1,4 @@
+import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/providers/fetchfromlocal.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: FlagProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: DatabaseProvider(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -93,7 +97,49 @@ class MyApp extends StatelessWidget {
 class MyHomeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return FutureBuilder(
+      future: checkAuthentication(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            if (snapshot.data) {
+              // HomePageScreen
+              return SignInScreen();
+            } else {
+              return SignInScreen();
+            }
+          }
+        }
+        return Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text('Checking Your Login Status', style: TextStyle(fontSize: 20)),
+                SizedBox(height: 20),
+                CircularProgressIndicator(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<bool> checkAuthentication() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    if(user==null){
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+}
+
+/*
+return StreamBuilder(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -112,5 +158,4 @@ class MyHomeApp extends StatelessWidget {
         }
       },
     );
-  }
-}
+    */
