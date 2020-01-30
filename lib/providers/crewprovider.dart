@@ -83,20 +83,43 @@ class CrewProvider with ChangeNotifier {
     return mList;
   }
 
-  Future<void> fetchCrewMembersFromCloud(String authid) async {
-    String crewid = await fetchAndSetCrewID(authid);
+  Future<List<CrewUser>> fetchCrewMembersFromCloud(String authid) async {
+    String crewid = await fetchCrewIdFromAuthID(authid);
+    List<CrewUser> crewlist = List<CrewUser>();
 
-    databaseReference
+    await databaseReference
         .child('BrewCrewCafe/Crews')
         .child(crewid)
         .once()
-        .then((DataSnapshot datasnapshot) {
-      print(datasnapshot.value);
+        .then((DataSnapshot snap) {
+      snap.value.forEach((mauthid, data) {
+        crewlist.add(CrewUser(
+          authid: data['authid'],
+          bio: data['bio'],
+          coffeeintensity: data['coffeeintensity'],
+          crewadmin: data['crewadmin'],
+          crewid: data['crewid'],
+          crewname: data['crewname'],
+          name: data['name'],
+          sugarintensity: data['sugarintensity'],
+        ));
+      });
+      print("Length of the list is ${crewlist.length}");
+      
     });
+    return crewlist;
   }
 
-  Future<String> fetchAndSetCrewID(String authid) async {
-    databaseReference.child('BrewCrewCafe/UserDetails').child(authid);
+  Future<String> fetchCrewIdFromAuthID(String authid) async {
+    String crewid = "";
+    await databaseReference
+        .child('BrewCrewCafe/UserDetails')
+        .child(authid)
+        .once()
+        .then((DataSnapshot snap) {
+      crewid = snap.value['crewid'];
+    });
+    return crewid;
   }
 
   Future<CrewUser> addNewCrewNodes({
@@ -148,22 +171,65 @@ class CrewProvider with ChangeNotifier {
   }
 
   Future<int> checkCrewIDExist({String crewid}) async {
-    try{await databaseReference
+    try {
+      await databaseReference
+          .child('BrewCrewCafe/CrewDetails')
+          .child(crewid)
+          .once()
+          .then((DataSnapshot snap) {
+        if (snap.value == null) {
+          return 0;
+        } else {
+          return 1;
+        }
+      });
+    } catch (error) {
+      print(error);
+      return 0;
+    }
+  }
+
+  Future<void> addUserInCrewNodes(
+    String authid,
+    String crewid,
+    String name,
+    String crewname,
+  ) async {
+    await databaseReference
+        .child('BrewCrewCafe/Crews')
+        .child(crewid)
+        .child(authid)
+        .set({
+      'authid': '$authid',
+      'crewname': '$crewname',
+      'name': '$name',
+      'bio': '',
+      'coffeeintensity': 0,
+      'sugarintensity': 0,
+      'crewadmin': 'false',
+      'crewid': '$crewid',
+    });
+
+    await databaseReference
+        .child('BrewCrewCafe/UserDetails')
+        .child(authid)
+        .set({
+      'crewadmin': 'false',
+      'crewid': '$crewid',
+    });
+  }
+
+  Future<String> findCrewNameFromCrewID(String crewid) async {
+    print('Came inside the crewid fetcher');
+    String crewname = "";
+    await databaseReference
         .child('BrewCrewCafe/CrewDetails')
         .child(crewid)
         .once()
         .then((DataSnapshot snap) {
-      if (snap.value == null) {
-        return 0;
-      } else {
-        return 1;
-      }
-    });} catch (error){
-      print(error);
-      return 0;
-    }
-
-
-
+      print(snap.value['crewname']);
+      crewname = snap.value['crewname'];
+    });
+    return crewname;
   }
 }
