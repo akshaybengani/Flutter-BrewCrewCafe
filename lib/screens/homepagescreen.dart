@@ -21,7 +21,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   bool _isLoading = true;
   bool syncProgressIndicator = false;
   final String shareMessage =
-      'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
+      'Hey!! Join us on Brew Crew Cafe,\nhttps://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \n\nAn app for coffee enthusiasts, Use this crew code below to join the revolution.\n';
   CrewUser currentUser;
 
   @override
@@ -41,9 +41,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
     Provider.of<CrewProvider>(context, listen: false).findByAuthId(authid);
     currentUser =
         Provider.of<CrewProvider>(context, listen: false).providerCurrentUser;
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void syncCrewListWithCloud() async {
+    print('I just pressed the sync button');
     setState(() {
       syncProgressIndicator = true;
     });
@@ -51,6 +56,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     List<CrewUser> crewlist =
         await Provider.of<CrewProvider>(context, listen: false)
             .fetchCrewMembersFromCloud(currentUser.authid);
+    await Provider.of<DatabaseProvider>(context, listen: false).deleteRows();
     int status = await Provider.of<DatabaseProvider>(context, listen: false)
         .insertCrewMembers(crewlist);
     if (status == 0) {
@@ -76,23 +82,28 @@ class _HomePageScreenState extends State<HomePageScreen> {
     return _isLoading
         ? Scaffold(
             appBar: AppBar(
-              title:
-                  Expanded(child: Text('Brewing your crew, Please Wait ...')),
+              title: Text('Brewing your crew'),
             ),
             body: Center(child: CircularProgressIndicator()),
           )
         : Scaffold(
             drawer: BrewDrawer(),
             appBar: AppBar(
-              title: Text('Brew Crew Cafe'),
+              title: Text('Brew it ☕'),
               actions: <Widget>[
-                syncProgressIndicator
+                !syncProgressIndicator
                     ? FlatButton.icon(
                         icon: Icon(Icons.sync, color: Colors.white),
-                        label: Text('Sync'),
+                        label: Text(
+                          'Sync',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onPressed: syncCrewListWithCloud,
                       )
-                    : CircularProgressIndicator(),
+                    : IconButton(
+                        icon: Icon(Icons.sync),
+                        color: Colors.white,
+                        onPressed: () {}),
                 FlatButton.icon(
                   icon: Icon(Icons.edit, color: Colors.white),
                   textColor: Colors.white,
@@ -131,7 +142,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           color: Colors.brown[800],
                         ),
                         onPressed: () {
-                          Share.share('$shareMessage ${currentUser.crewid}');
+                          Share.share('$shareMessage \n${currentUser.crewid}');
                         },
                         label: Text(
                           'Invite',

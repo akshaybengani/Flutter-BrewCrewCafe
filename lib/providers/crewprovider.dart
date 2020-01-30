@@ -24,7 +24,7 @@ class CrewProvider with ChangeNotifier {
     return mList;
   }
 
-  void setLocalListFromDatabase(List<CrewUser> dbcrewlist){
+  void setLocalListFromDatabase(List<CrewUser> dbcrewlist) {
     _crewlist = dbcrewlist;
   }
 
@@ -50,8 +50,8 @@ class CrewProvider with ChangeNotifier {
         ));
       });
       print("Length of the list is ${crewlist.length}");
-      
     });
+    _crewlist = crewlist;
     return crewlist;
   }
 
@@ -89,8 +89,8 @@ class CrewProvider with ChangeNotifier {
       'crewname': '$crewname',
       'name': '$username',
       'bio': '',
-      'coffeeintensity': 0,
-      'sugarintensity': 0,
+      'coffeeintensity': 1,
+      'sugarintensity': 1,
       'crewadmin': 'true',
       'crewid': '$crewid',
     });
@@ -106,8 +106,8 @@ class CrewProvider with ChangeNotifier {
       authid: authid,
       bio: '',
       crewid: crewid,
-      coffeeintensity: 0,
-      sugarintensity: 0,
+      coffeeintensity: 1,
+      sugarintensity: 1,
       crewadmin: 'true',
       crewname: crewname,
       name: username,
@@ -149,8 +149,8 @@ class CrewProvider with ChangeNotifier {
       'crewname': '$crewname',
       'name': '$name',
       'bio': '',
-      'coffeeintensity': 0,
-      'sugarintensity': 0,
+      'coffeeintensity': 1,
+      'sugarintensity': 1,
       'crewadmin': 'false',
       'crewid': '$crewid',
     });
@@ -176,5 +176,22 @@ class CrewProvider with ChangeNotifier {
       crewname = snap.value['crewname'];
     });
     return crewname;
+  }
+
+  Future<String> updateUserPref(CrewUser crewUser) async {
+    try {
+      await databaseReference
+          .child('BrewCrewCafe/Crews')
+          .child(crewUser.crewid)
+          .child(crewUser.authid)
+          .update({
+        'bio': crewUser.bio,
+        'coffeeintensity': crewUser.coffeeintensity,
+        'sugarintensity': crewUser.sugarintensity,
+      });
+      return "All Ok";
+    } catch (error) {
+      return "Something went wrong";
+    }
   }
 }

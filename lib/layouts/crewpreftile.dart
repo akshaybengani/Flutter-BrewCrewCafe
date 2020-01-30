@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class CrewPrefTile extends StatelessWidget {
   final String name, bio;
-  final int coffeeIntensity, sugarIntensity;
+  final int coffeeIntensity;
+  final int sugarIntensity;
 
   CrewPrefTile(
       {this.name, this.bio, this.coffeeIntensity, this.sugarIntensity});

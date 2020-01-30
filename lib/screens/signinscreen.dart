@@ -35,7 +35,7 @@ class _SignInScreenState extends State<SignInScreen> {
     _formKey.currentState.save();
     print('Form state is now saved');
     setState(() {
-      loadingMsg = "Logging in Please Wait ...";
+      loadingMsg = "🔑Checking Your Credentials🔐\nPlease Wait ...";
       _isLoading = true;
     });
 
@@ -43,7 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
         .loginWithEmail(email: email, password: password)
         .then((uid) {
       setState(() {
-        loadingMsg = "Great! Getting your crew members onboard\nPlease Wait...";
+        loadingMsg = "Great! 🎉🎉 You are now Authenticated🔓\nPlease Wait...";
         authid = uid;
       });
     }).catchError((onError) {
@@ -54,9 +54,16 @@ class _SignInScreenState extends State<SignInScreen> {
           ctx: context, title: "Authentication Failed", message: emsg);
     });
     if (authstatus) {
+      setState(() {
+        loadingMsg = "Bringing 🌠 Your Crew Members 👨‍👩‍👧‍👦 onboard 🧳🧳\nPlease Wait...";
+      });
+      
       List<CrewUser> crewlist =
           await Provider.of<CrewProvider>(context, listen: false)
               .fetchCrewMembersFromCloud(authid);
+      setState(() {
+        loadingMsg = "Arranging Tables 💺 for you and your crew 👨‍👩‍👧‍👦";
+      });
 
       String dbres = await Provider.of<DatabaseProvider>(context, listen: false)
           .deleteTable();
@@ -64,6 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (dbres == "All Ok") {
         int status = await Provider.of<DatabaseProvider>(context, listen: false)
             .insertCrewMembers(crewlist);
+        // This function is currently inactive, check database provider for more info.
         if (status == 0) {
           CustomInfoDialog.showInfoDialog(
               title: 'Problem Occured',

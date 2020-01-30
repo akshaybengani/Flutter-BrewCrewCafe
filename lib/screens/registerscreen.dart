@@ -5,7 +5,6 @@ import 'package:brew_crew_cafe/providers/crewprovider.dart';
 import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/signinscreen.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:brew_crew_cafe/layouts/errormsgmaker.dart';
@@ -95,23 +94,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
             await Provider.of<CrewProvider>(context, listen: false)
                 .fetchCrewMembersFromCloud(authid);
 
-        int status = await Provider.of<DatabaseProvider>(context, listen: false)
-            .insertCrewMembers(crewList);
-        if (status == 0) {
-          CustomInfoDialog.showInfoDialog(
-              title: 'Problem Occured',
-              ctx: context,
-              message:
-                  'Some Internal problem occured please reinstall the app');
-          setState(() {
-            _isLoading = false;
-          });
-          return;
-        } else {
-          print(
-              'Every Process of Registration Completed now I can move to HomeScreen');
-          Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
-        }
+        String dbres =
+            await Provider.of<DatabaseProvider>(context, listen: false)
+                .deleteTable();
+        if (dbres == "All Ok") {
+          int status =
+              await Provider.of<DatabaseProvider>(context, listen: false)
+                  .insertCrewMembers(crewList);
+          if (status == 0) {
+            CustomInfoDialog.showInfoDialog(
+                title: 'Problem Occured',
+                ctx: context,
+                message:
+                    'Some Internal problem occured please reinstall the app');
+            setState(() {
+              _isLoading = false;
+            });
+            return;
+          } else {
+            print(
+                'Every Process of Registration Completed now I can move to HomeScreen');
+            Navigator.of(context)
+                .pushReplacementNamed(HomePageScreen.routename);
+          }
+        } // Internal Database Check and table deletion response
       } // AuthCheck If Condition
 
     } // Else bracket which works when crewid is valid
@@ -130,7 +136,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _isLoading = true;
     });
 
-    String newId = _authData['crewname'] + shortid.generate();
+    shortid.characters(
+        '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!');
+    String newId =
+        _authData['crewname'].replaceAll(' ', '') + '-' + shortid.generate();
     print(newId);
 
     print('Now lets go for signup');
@@ -177,25 +186,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
       List<CrewUser> list = List<CrewUser>();
       list.add(crewUser);
 
-      int status = await Provider.of<DatabaseProvider>(context, listen: false)
-          .insertCrewMembers(list);
-      if (status == 0) {
-        CustomInfoDialog.showInfoDialog(
-            title: 'Problem Occured',
-            ctx: context,
-            message: 'Some Internal problem occured please reinstall the app');
-        setState(() {
-          _isLoading = false;
-        });
-        return;
-      } // Database value inserted in database
-      else{
-        setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
-      }
-
+      String dbres = await Provider.of<DatabaseProvider>(context, listen: false)
+          .deleteTable();
+      if (dbres == "All Ok") {
+        int status = await Provider.of<DatabaseProvider>(context, listen: false)
+            .insertCrewMembers(list);
+        if (status == 0) {
+          CustomInfoDialog.showInfoDialog(
+              title: 'Problem Occured',
+              ctx: context,
+              message:
+                  'Some Internal problem occured please reinstall the app');
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        } // Database value inserted in database
+        else {
+          setState(() {
+            _isLoading = false;
+          });
+          Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
+        }
+      } // Internal Database Check and table deletion response
     } // authstatus validator works after signup
   } // startyourcrew function
 
@@ -205,11 +218,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: _isLoading
-          ? Center(
+          ? Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 100),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text(loadingMsg, style: theme.primaryTextTheme.subhead),
                   CircularProgressIndicator(),
+                  SizedBox(height: 10),
+                  Text(
+                    loadingMsg,
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             )

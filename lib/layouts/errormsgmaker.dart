@@ -5,13 +5,13 @@ class ErrorMsgMaker {
     if (error.contains('ERROR_INVALID_EMAIL'))
       emsg = 'The Entered Email Address Format is not valid';
     if (error.contains('ERROR_WRONG_PASSWORD'))
-      emsg = 'The Entered Email Address Format is not valid';
+      emsg = 'The Entered Password is incorrect';
     if (error.contains('ERROR_INVALID_EMAIL'))
       emsg = 'The Entered Email Address Format is not valid';
     if (error.contains('ERROR_INVALID_EMAIL'))
       emsg = 'The Entered Email Address Format is not valid';
 
     print('Error Msg sended by msgMaker is $emsg');
-    return emsg;
+    return emsg; //+ "  =>  $error";
   }
 }

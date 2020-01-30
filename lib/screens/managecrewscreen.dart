@@ -7,10 +7,12 @@ import 'package:provider/provider.dart';
 class ManageCrewScreen extends StatelessWidget {
   static const routename = '/managecrew';
 
+  
+
   @override
   Widget build(BuildContext context) {
-    final crewProd = Provider.of<CrewProvider>(context);
-    final crewExceptCaptain = crewProd.crewExceptCaptain('001');
+    final currentUser = Provider.of<CrewProvider>(context, listen: false).providerCurrentUser;
+    final crewExceptCaptain = Provider.of<CrewProvider>(context, listen: true).crewExceptCaptain(currentUser.authid);
 
     return WillPopScope(
       onWillPop: () => Navigator.of(context).popAndPushNamed(HomePageScreen.routename),
@@ -86,9 +88,7 @@ class ManageCrewScreen extends StatelessWidget {
                                 color: Colors.brown,
                               ),
                             ),
-                            onPressed: () {
-                              
-                            },
+                            onPressed: () {},
                           ),
                         ],
                       ),

@@ -1,6 +1,5 @@
-import 'package:brew_crew_cafe/layouts/contactandsupport.dart';
+import 'package:brew_crew_cafe/screens/contactandsupport.dart';
 import 'package:brew_crew_cafe/providers/databaseprovider.dart';
-import 'package:brew_crew_cafe/providers/fetchfromlocal.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
 import 'package:brew_crew_cafe/providers/flagprovider.dart';
@@ -104,8 +103,7 @@ class MyHomeApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
             if (snapshot.data) {
-              // HomePageScreen
-              return SignInScreen();
+              return  HomePageScreen();
             } else {
               return SignInScreen();
             }
@@ -139,24 +137,3 @@ class MyHomeApp extends StatelessWidget {
 
 }
 
-/*
-return StreamBuilder(
-      stream: FirebaseAuth.instance.onAuthStateChanged,
-      builder: (BuildContext context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          if (snapshot.hasData) {
-            //Provider.of<FlagProvider>(context,listen: false).dataExistTrue;
-            return FetchFromLocal();
-          } else {
-            return SignInScreen();
-          }
-        }
-      },
-    );
-    */

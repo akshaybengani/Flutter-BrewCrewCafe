@@ -1,8 +1,10 @@
-import 'package:brew_crew_cafe/layouts/contactandsupport.dart';
+import 'package:brew_crew_cafe/screens/contactandsupport.dart';
 import 'package:brew_crew_cafe/models/crewuser.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
+import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/screens/managecrewscreen.dart';
+import 'package:brew_crew_cafe/screens/signinscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -15,7 +17,7 @@ class BrewDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     currentUser = Provider.of<CrewProvider>(context, listen:false).providerCurrentUser;
     final String shareMessage =
-        'Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts, Use this crew code to join the revolution.';
+        'Hey!! Join us on Brew Crew Cafe,\nhttps://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \n\nAn app for coffee enthusiasts, Use this crew code below to join the revolution.\n';
     
     return Drawer(
       child: ListView(
@@ -65,16 +67,18 @@ class BrewDrawer extends StatelessWidget {
                 ListTile(
                   onTap: () {
                     //  Update the share message for the App Sharing
-                    Share.share('Hey!! Join us on Brew Crew Cafe, https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts');
+                    Share.share('Hey!! Join us on Brew Crew Cafe,☕☕ \nhttps://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe \nAn app for coffee enthusiasts. ☕☕');
                   },
                   leading: Icon(Icons.share, color: Colors.brown[800]),
                   title: Text('Share Brew Crew Cafe'),
                 ),
                 AdminListTile(currentUser.crewadmin.toString()),
                 ListTile(
-                  onTap: () {                 
-                    Provider.of<AuthProvider>(context,listen: false).signOut();
-                    Navigator.of(context).pop();
+                  onTap: () async {                 
+                    await Provider.of<AuthProvider>(context,listen: false).signOut();
+                    String dbres = await Provider.of<DatabaseProvider>(context,listen: false).deleteTable();
+                    print(dbres);
+                    Navigator.of(context).popAndPushNamed(SignInScreen.routename);
                   },
                   leading: Icon(Icons.person, color: Colors.brown[800]),
                   title: Text('Log out'),
