@@ -1,4 +1,6 @@
+import 'package:brew_crew_cafe/layouts/custominfodialog.dart';
 import 'package:brew_crew_cafe/models/crewuser.dart';
+import 'package:brew_crew_cafe/providers/concheck.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
 import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
@@ -17,6 +19,7 @@ class _CoffeePrefScreenState extends State<CoffeePrefScreen> {
   int _sugarIntensity = 1;
   CrewUser currentUser;
   bool _isLoading = false;
+  String loadingMsg = "";
   TextEditingController _bioController = TextEditingController();
 
   @override
@@ -29,6 +32,8 @@ class _CoffeePrefScreenState extends State<CoffeePrefScreen> {
     _sugarIntensity = currentUser.sugarintensity;
     _bioController = TextEditingController(text: currentUser.bio);
   }
+
+  // ! New Function Starts Below
 
   Future<void> _saveCoffeePref() async {
     CrewUser newData = CrewUser(
@@ -43,18 +48,33 @@ class _CoffeePrefScreenState extends State<CoffeePrefScreen> {
     );
 
     setState(() {
+      loadingMsg =
+          "Thankyou for updating your Taste of coffee with your crew.\nPlease wait ... \nWhile we share your taste with your crew members";
       _isLoading = true;
     });
 
-    String updateRes =
-        await Provider.of<CrewProvider>(context, listen: false).updateUserPref(newData);
-    print(updateRes);
+    bool concheck = await ConCheck.checkData();
 
-    await Provider.of<DatabaseProvider>(context, listen: false).updateUserPref(newData);
-    print('Update pref set');
+    if (concheck) {
+      String updateRes = await Provider.of<CrewProvider>(context, listen: false)
+          .updateUserPref(newData);
+      print(updateRes);
 
-    Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
+      await Provider.of<DatabaseProvider>(context, listen: false)
+          .updateUserPref(newData);
+      print('Update pref set');
+      Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
 
+      CustomInfoDialog.showInfoDialog(
+          ctx: context,
+          title: "Unable to Connect",
+          message:
+              "Our Cafe is unable to connect to the internet, Please check your network connection settings or contact your IT Administration for more help.");
+    }
   }
 
   @override
@@ -62,9 +82,23 @@ class _CoffeePrefScreenState extends State<CoffeePrefScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
+            ? Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.5, left: 30, right: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          CircularProgressIndicator(),
+                          SizedBox(height: 10),
+                          Text(
+                            loadingMsg,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    )
             : Container(
                 margin:
                     EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
@@ -93,13 +127,13 @@ class _CoffeePrefScreenState extends State<CoffeePrefScreen> {
                       max: 900,
                       divisions: 8,
                       inactiveColor: Colors.brown[100],
-                      activeColor: Colors.brown[_coffeeIntensity*100 ?? 100],
+                      activeColor: Colors.brown[_coffeeIntensity * 100 ?? 100],
                       onChanged: (val) {
                         setState(() {
-                          _coffeeIntensity = (val.round()~/100).toInt();
+                          _coffeeIntensity = (val.round() ~/ 100).toInt();
                         });
                       },
-                      value: (_coffeeIntensity*100 ?? 100).toDouble(),
+                      value: (_coffeeIntensity * 100 ?? 100).toDouble(),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10),

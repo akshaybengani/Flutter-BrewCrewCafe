@@ -1,6 +1,7 @@
 import 'package:brew_crew_cafe/layouts/custominfodialog.dart';
 import 'package:brew_crew_cafe/models/crewuser.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
+import 'package:brew_crew_cafe/providers/concheck.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
 import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
@@ -45,8 +46,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _formKey.currentState.save();
     print('Form state is now saved');
     setState(() {
+      loadingMsg = "☕We are checking your 🆔 Crew ID and 🔐Authenticating you to your 👨‍👩‍👧‍👦 Crew Members\nPlease wait...";
       _isLoading = true;
     });
+
+
+    bool concheck = await ConCheck.checkData();
+
+    if(concheck){
 
     // ? Checking EnteredCrewId exists or not
     int existStatus = await Provider.of<CrewProvider>(context, listen: false)
@@ -59,9 +66,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ctx: context,
           title: 'Crew Id not Found',
           message:
-              'We are sorry to say but the entered crewid is not found in our cafe, Please recheck the crew Id and Try again.');
+              'We are 😔 Sorry to say but the entered 🆔 Crew Id is not found in our cafe, Please 🔄 Recheck the Crew Id and Try again.');
       return;
     } else {
+
+      setState(() {
+        loadingMsg = "Great ☕☕ your entered 🆔 Crew Id is valid in our Cafe\n Please wait while we 🔐 Register you as our Cafe member";
+      });
+
       print('Now lets go for signup');
       String authid = await Provider.of<AuthProvider>(context, listen: false)
           .signUpWithEmail(
@@ -84,6 +96,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       });
 
       if (authstatus) {
+
+        setState(() {
+          loadingMsg = "Superb ☕ You are now 🔐Authenticated member of our ☕Cafe\n Please wait while we 🔌connect you with your 👨‍👩‍👧‍👦 Crew Members\n📊FACT: A Coffee ☕Brewed with patience is the 💛Best Coffee of your day.";
+        });
+
         String crewname =
             await Provider.of<CrewProvider>(context, listen: false)
                 .findCrewNameFromCrewID(_authData['crewid']);
@@ -121,6 +138,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       } // AuthCheck If Condition
 
     } // Else bracket which works when crewid is valid
+  
+  } // Internet Connection Check 
+  else{
+    setState(() {
+      loadingMsg = "😟Unable to 🔌Connect to 🌐Internet";
+      _isLoading = false;
+    });
+    CustomInfoDialog.showInfoDialog(ctx: context, title: "Unable to connect", message: "Our Cafe is unable to connect to the internet, Please check your network connection settings or contact your IT Administration for more help.");
+
+  }
+  
   } // Join your crew bracket which is called at button press
 
   Future<void> _startYourCrew() async {
@@ -132,15 +160,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
     print('Validator Validated the form keys');
     _formKey.currentState.save();
     print('Form state is now saved');
+    
     setState(() {
+       loadingMsg = "☕We are brewing your 🆔 Crew Name to get a special CrewID Just for you and your 👨‍👩‍👧‍👦 Crew Members\nPlease wait...";
       _isLoading = true;
     });
+
+    bool concheck = await ConCheck.checkData();
+
+    if(concheck){
 
     shortid.characters(
         '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!');
     String newId =
         _authData['crewname'].replaceAll(' ', '') + '-' + shortid.generate();
     print(newId);
+
+    setState(() {
+      loadingMsg = "We just prepared your Unique 🆔 CrewID for you & your 👨‍👩‍👧‍👦 Crew Members, Now let us 🔐Authenticate you.\nPlease Wait...";
+    });
 
     print('Now lets go for signup');
     String authid = await Provider.of<AuthProvider>(context, listen: false)
@@ -164,6 +202,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     if (authstatus) {
+        
+      setState(() {
+        loadingMsg = "Great☕ You are now 🔐 Authenticated member of our ☕Cafe, Please wait...\n And don't forget to invite your 👨‍👩‍👧‍👦 friends by sharing our ☕Cafe with them.";
+      });
+
       CrewUser crewUser =
           await Provider.of<CrewProvider>(context, listen: false)
               .addNewCrewNodes(
@@ -210,6 +253,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
       } // Internal Database Check and table deletion response
     } // authstatus validator works after signup
+   } // Internet checker
+    else{
+    setState(() {
+      loadingMsg = "😟Unable to 🔌Connect to 🌐Internet";
+      _isLoading = false;
+    });
+    CustomInfoDialog.showInfoDialog(ctx: context, title: "Unable to connect", message: "Our Cafe is unable to connect to the internet, Please check your network connection settings or contact your IT Administration for more help.");
+
+  }
   } // startyourcrew function
 
   @override
@@ -220,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: _isLoading
           ? Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 100),
+              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3, left: 30, right: 30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -229,7 +281,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: 10),
                   Text(
                     loadingMsg,
-                    textAlign: TextAlign.center,
+                   
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
                   ),
                 ],
               ),

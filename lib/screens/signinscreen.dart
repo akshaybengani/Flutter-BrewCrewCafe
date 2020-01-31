@@ -1,6 +1,7 @@
 import 'package:brew_crew_cafe/layouts/custominfodialog.dart';
 import 'package:brew_crew_cafe/models/crewuser.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
+import 'package:brew_crew_cafe/providers/concheck.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
 import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
@@ -39,7 +40,12 @@ class _SignInScreenState extends State<SignInScreen> {
       _isLoading = true;
     });
 
-    await Provider.of<AuthProvider>(context, listen: false)
+    bool conCheck = await ConCheck.checkData();
+    print(conCheck);
+
+    if(conCheck){
+
+        await Provider.of<AuthProvider>(context, listen: false)
         .loginWithEmail(email: email, password: password)
         .then((uid) {
       setState(() {
@@ -97,7 +103,18 @@ class _SignInScreenState extends State<SignInScreen> {
           _isLoading = false;
         });
       } // else block in case database encountered problem
-    } // AuthStatus bool checker for successfull auth
+    }
+
+    } // Network Check
+    else{
+      setState(() {
+        loadingMsg = "😟Unable to 🔌Connect to 🌐Internet";
+        _isLoading = false;
+      });
+      CustomInfoDialog.showInfoDialog(ctx: context, title: "Unable to connect", message: "Our Cafe is unable to connect to the internet, Please check your network connection settings or contact your IT Administration for more help.");
+    }
+
+     // AuthStatus bool checker for successfull auth
   } // Submit form function ending
 
   @override

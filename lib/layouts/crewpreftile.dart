@@ -13,6 +13,7 @@ class CrewPrefTile extends StatelessWidget {
     return Card(
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.brown[coffeeIntensity * 100]),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: ListTile(
         contentPadding: EdgeInsets.all(10),
