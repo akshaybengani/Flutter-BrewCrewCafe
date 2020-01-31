@@ -1,7 +1,6 @@
 import 'package:brew_crew_cafe/providers/authprovider.dart';
 import 'package:brew_crew_cafe/providers/flagprovider.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,9 +16,9 @@ class _FetchFromLocalState extends State<FetchFromLocal> {
   @override
   void initState() {
     super.initState();
-    print('Checking Data Exist Status');
+    //print('Checking Data Exist Status');
     bool destatus = Provider.of<FlagProvider>(context,listen: false).dataExistStatus;
-    print("Data Exist Status :"+destatus.toString());
+    //print("Data Exist Status :"+destatus.toString());
 
     // Data Exist Dont need to fetch again
     if(destatus){
@@ -35,9 +34,9 @@ class _FetchFromLocalState extends State<FetchFromLocal> {
 
   Future<void> fetchFromLocalFirst() async {
 
-     print('I am Fetching user id from firebase user using AuthProvider');
+     //print('I am Fetching user id from firebase user using AuthProvider');
      String uid = await Provider.of<AuthProvider>(context, listen: false).getCurrentUser();
-     print("My current user uid:"+uid);
+     //print("My current user uid:"+uid);
      
      
 

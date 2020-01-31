@@ -27,14 +27,14 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // Submit form function when user press the login button
   Future<void> _submitForm() async {
-    print('Join Your Crew Button Pressed');
+    //print('Join Your Crew Button Pressed');
     if (!_formKey.currentState.validate()) {
-      print('Form Keys Are Not Valid');
+      //print('Form Keys Are Not Valid');
       return;
     }
-    print('Validator Validated the form keys');
+    //print('Validator Validated the form keys');
     _formKey.currentState.save();
-    print('Form state is now saved');
+    //print('Form state is now saved');
     setState(() {
       loadingMsg = "🔑Checking Your Credentials🔐\nPlease Wait ...";
       _isLoading = true;
@@ -89,8 +89,8 @@ class _SignInScreenState extends State<SignInScreen> {
           });
           return;
         } else {
-          print(
-              'Every Process of Signup Completed now I can move to HomeScreen');
+          //print(
+          //    'Every Process of Signup Completed now I can move to HomeScreen');
           Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
         }
       } // DB Check Status

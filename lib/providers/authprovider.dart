@@ -8,12 +8,12 @@ class AuthProvider extends ChangeNotifier {
     @required String email,
     @required String password,
   }) async {
-    print('Email $email and Password $password recieved now checking credentials.');
+    //print('Email $email and Password $password recieved now checking credentials.');
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    print('Authentication process completed Here is the :$result');
+    //print('Authentication process completed Here is the :$result');
     FirebaseUser user = result.user;
-    print('We got the firebase user :$user with uid as:${user.uid}');
+    //print('We got the firebase user :$user with uid as:${user.uid}');
     return user.uid;
   }
 

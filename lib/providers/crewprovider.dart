@@ -49,7 +49,7 @@ class CrewProvider with ChangeNotifier {
           sugarintensity: data['sugarintensity'],
         ));
       });
-      print("Length of the list is ${crewlist.length}");
+      //print("Length of the list is ${crewlist.length}");
     });
     _crewlist = crewlist;
     return crewlist;
@@ -165,7 +165,7 @@ class CrewProvider with ChangeNotifier {
   }
 
   Future<String> findCrewNameFromCrewID(String crewid) async {
-    print('Came inside the crewid fetcher');
+    //print('Came inside the crewid fetcher');
     String crewname = "";
     await databaseReference
         .child('BrewCrewCafe/CrewDetails')

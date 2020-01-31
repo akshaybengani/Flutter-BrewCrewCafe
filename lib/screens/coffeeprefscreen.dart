@@ -62,7 +62,7 @@ class _CoffeePrefScreenState extends State<CoffeePrefScreen> {
 
       await Provider.of<DatabaseProvider>(context, listen: false)
           .updateUserPref(newData);
-      print('Update pref set');
+      //print('Update pref set');
       Navigator.of(context).pushReplacementNamed(HomePageScreen.routename);
     } else {
       setState(() {

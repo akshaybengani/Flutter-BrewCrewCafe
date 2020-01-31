@@ -37,14 +37,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   };
 
   Future<void> _joinYourCrew() async {
-    print('Join Your Crew Button Pressed');
+    //print('Join Your Crew Button Pressed');
     if (!_formKey.currentState.validate()) {
-      print('Form Keys Are Not Valid');
+      //print('Form Keys Are Not Valid');
       return;
     }
-    print('Validator Validated the form keys');
+    //print('Validator Validated the form keys');
     _formKey.currentState.save();
-    print('Form state is now saved');
+    //print('Form state is now saved');
     setState(() {
       loadingMsg = "☕We are checking your 🆔 Crew ID and 🔐Authenticating you to your 👨‍👩‍👧‍👦 Crew Members\nPlease wait...";
       _isLoading = true;
@@ -74,7 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         loadingMsg = "Great ☕☕ your entered 🆔 Crew Id is valid in our Cafe\n Please wait while we 🔐 Register you as our Cafe member";
       });
 
-      print('Now lets go for signup');
+      //print('Now lets go for signup');
       String authid = await Provider.of<AuthProvider>(context, listen: false)
           .signUpWithEmail(
               email: _authData['email'], password: _authData['password'])
@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           _isLoading = false;
         });
-        print('everything now finished with errors');
+        //print('everything now finished with errors');
         authstatus = false;
         return;
       });
@@ -129,8 +129,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             });
             return;
           } else {
-            print(
-                'Every Process of Registration Completed now I can move to HomeScreen');
+           // print(
+           //     'Every Process of Registration Completed now I can move to HomeScreen');
             Navigator.of(context)
                 .pushReplacementNamed(HomePageScreen.routename);
           }
@@ -152,14 +152,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   } // Join your crew bracket which is called at button press
 
   Future<void> _startYourCrew() async {
-    print('Start Your Crew Button Pressed');
+   // print('Start Your Crew Button Pressed');
     if (!_formKey.currentState.validate()) {
-      print('Form Keys Are Not Valid');
+      //print('Form Keys Are Not Valid');
       return;
     }
-    print('Validator Validated the form keys');
+    //print('Validator Validated the form keys');
     _formKey.currentState.save();
-    print('Form state is now saved');
+    //print('Form state is now saved');
     
     setState(() {
        loadingMsg = "☕We are brewing your 🆔 Crew Name to get a special CrewID Just for you and your 👨‍👩‍👧‍👦 Crew Members\nPlease wait...";
@@ -180,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       loadingMsg = "We just prepared your Unique 🆔 CrewID for you & your 👨‍👩‍👧‍👦 Crew Members, Now let us 🔐Authenticate you.\nPlease Wait...";
     });
 
-    print('Now lets go for signup');
+    //print('Now lets go for signup');
     String authid = await Provider.of<AuthProvider>(context, listen: false)
         .signUpWithEmail(
             email: _authData['email'], password: _authData['password'])
@@ -196,7 +196,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _isLoading = false;
       });
-      print('everything now finished with errors');
+     // print('everything now finished with errors');
       authstatus = false;
       return;
     });
@@ -225,7 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return;
       });
 
-      print('Came at the position to add a list item');
+      //print('Came at the position to add a list item');
       List<CrewUser> list = List<CrewUser>();
       list.add(crewUser);
 
@@ -413,11 +413,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                           labelText: 'Crew ID'),
                                                 ),
                                               ),
-                                              IconButton(
-                                                icon: const Icon(
-                                                    Icons.content_paste),
-                                                onPressed: () {},
-                                              ),
+                                              
                                             ],
                                           ),
 

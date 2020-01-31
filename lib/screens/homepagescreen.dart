@@ -49,7 +49,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   }
 
   void syncCrewListWithCloud() async {
-    print('I just pressed the sync button');
+    //print('I just pressed the sync button');
     setState(() {
       syncProgressIndicator = true;
     });
