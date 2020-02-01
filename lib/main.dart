@@ -2,8 +2,6 @@ import 'package:brew_crew_cafe/screens/contactandsupport.dart';
 import 'package:brew_crew_cafe/providers/databaseprovider.dart';
 import 'package:brew_crew_cafe/providers/authprovider.dart';
 import 'package:brew_crew_cafe/providers/crewprovider.dart';
-import 'package:brew_crew_cafe/providers/flagprovider.dart';
-import 'package:brew_crew_cafe/screens/brewdrawer.dart';
 import 'package:brew_crew_cafe/screens/coffeeprefscreen.dart';
 import 'package:brew_crew_cafe/screens/homepagescreen.dart';
 import 'package:brew_crew_cafe/screens/managecrewscreen.dart';
@@ -30,9 +28,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: CrewProvider(),
-        ),
-        ChangeNotifierProvider.value(
-          value: FlagProvider(),
         ),
         ChangeNotifierProvider.value(
           value: DatabaseProvider(),
