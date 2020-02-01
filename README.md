@@ -7,7 +7,7 @@ For Quick Starters Register yourself by creating your own new crews and share yo
 ## Getting Started
 <img align= "left" src="resources/logo.jpg" width= 200>
 
-<img src = "resources/playicon.png" width = 50 align="left"> <b> Download Now</b>
+<img src = "resources/playicon.png" width = 50 align="left"> <a href="https://play.google.com/store/apps/details?id=com.akshaybengani.brewcrewcafe"> <b>Download Now</b></a>
 
 <br>
 <br>
