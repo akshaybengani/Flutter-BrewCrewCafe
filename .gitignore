@@ -28,6 +28,7 @@
 .packages
 .pub-cache/
 .pub/
+/Production/
 /build/
 /android/app/google-services.json
 android/key.properties
